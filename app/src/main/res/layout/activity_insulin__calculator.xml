@@ -90,10 +90,11 @@
                 android:enabled="true"
                 android:layout_below="@+id/blodsugar"
                 android:layout_toEndOf="@+id/bsLabel"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="5dp"
                 android:layout_column="0"
                 android:layout_span="2"
-                android:layout_marginBottom="35dp" />
+                android:layout_marginBottom="5dp"
+                android:textAlignment="center" />
 
         </TableRow>
 
