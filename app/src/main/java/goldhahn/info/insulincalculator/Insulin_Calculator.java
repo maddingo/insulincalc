@@ -26,7 +26,7 @@ public class Insulin_Calculator extends AppCompatActivity {
         Double bs = Double.valueOf(bsValue.getText().toString());
         Double kh = Double.valueOf(khValue.getText().toString());
 
-        Double insulin = kh / 15 + (bs - 6) / 3;
+        Double insulin = kh / 15 + (bs - 6) / 3.6;
         insulinValue.setText(formatNumber(insulin));
         insulinValue.setNextFocusDownId(R.id.insulin);
     }
