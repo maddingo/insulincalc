@@ -2,20 +2,29 @@ package goldhahn.info.insulincalculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-public class Insulin_Calculator extends AppCompatActivity {
+public class InsulinCalculatorActivity extends AppCompatActivity {
     private NumberFormat numberFormat = new DecimalFormat("###0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insulin__calculator);
+        setContentView(R.layout.activity_insulin_calculator);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
 
     public void onCalculate(View view) {
 
@@ -36,5 +45,4 @@ public class Insulin_Calculator extends AppCompatActivity {
 
         return formatted;
     }
-
 }
