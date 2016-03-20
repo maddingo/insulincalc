@@ -1,4 +1,4 @@
-package goldhahn.info.insulincalculator;
+package info.goldhahn.insulise;
 
 
 import android.os.Bundle;
