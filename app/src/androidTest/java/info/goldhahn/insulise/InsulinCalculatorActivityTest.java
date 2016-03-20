@@ -25,7 +25,7 @@ public class InsulinCalculatorActivityTest {
     @Rule
     public ActivityTestRule<InsulinCalculatorActivity> testRule = new ActivityTestRule<InsulinCalculatorActivity>(InsulinCalculatorActivity.class);
 
-//    @Test
+    @Test
     public void withDefaultPrefs() {
         calculate(null, null, null, "12", "50", "5.00");
     }
