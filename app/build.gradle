@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "goldhahn.info.insulincalculator"
+        applicationId "info.goldhahn.insulise"
         minSdkVersion 17
         targetSdkVersion 17
         versionCode 1
