@@ -1,5 +1,6 @@
 package info.goldhahn.insulise;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import info.goldhahn.insulise.history.HistoryContract;
 
 public class InsulinCalculatorActivity extends AppCompatActivity {
     private NumberFormat numberFormat = new DecimalFormat("###0.00");
@@ -37,6 +40,9 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
+            case R.id.action_history:
+                startActivity(new Intent(this, HistoryActivity.class));
+                return true;
         }
         return false;
     }
@@ -57,9 +63,25 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
             EditText insulinValue = (EditText) findViewById(R.id.insulin);
             insulinValue.setText(formatNumber(insulin));
             insulinValue.setNextFocusDownId(R.id.insulin);
+
+            saveToHistory(ik, is, targetVal, bs, kh, insulin);
         } catch (RuntimeException e) {
             Toast.makeText(this, getString(R.string.error_msg_calc), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveToHistory(Double ik, Double is, Double targetVal, Double bs, Double kh, Double insulin) {
+
+        ContentValues values = new ContentValues();
+        values.put(HistoryContract.HistoryEntry.Column.TIMESTAMP.toString(), System.currentTimeMillis() / 1000);
+        values.put(HistoryContract.HistoryEntry.Column.IK.toString(), ik);
+        values.put(HistoryContract.HistoryEntry.Column.IS.toString(), is);
+        values.put(HistoryContract.HistoryEntry.Column.TARGET.toString(), targetVal);
+        values.put(HistoryContract.HistoryEntry.Column.BS.toString(), bs);
+        values.put(HistoryContract.HistoryEntry.Column.KH.toString(), kh);
+        values.put(HistoryContract.HistoryEntry.Column.INSULIN.toString(), insulin);
+
+        getContentResolver().insert(HistoryContract.HistoryEntry.CONTENT_URI, values);
     }
 
     @NonNull

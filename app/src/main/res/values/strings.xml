@@ -9,5 +9,8 @@
     <string name="pref_key_target">Target Value</string>
     <string name="pref_target" translatable="false">Target Value</string>
     <string name="error_msg_calc">Something went wrong, try again.</string>
+    <string name="menu_history">History</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_history">History</string>
 
 </resources>

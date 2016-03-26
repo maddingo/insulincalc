@@ -17,7 +17,18 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".InsulinCalculatorActivity"/>
+
+        <activity android:name=".HistoryActivity"
+            android:label="@string/title_activity_history"
+            android:parentActivityName=".InsulinCalculatorActivity"/>
+
+        <provider
+            android:name=".history.HistoryProvider"
+            android:authorities="info.goldhahn.insulise"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>
