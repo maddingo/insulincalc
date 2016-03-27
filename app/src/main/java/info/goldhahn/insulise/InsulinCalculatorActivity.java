@@ -65,6 +65,8 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
             insulinValue.setNextFocusDownId(R.id.insulin);
 
             saveToHistory(ik, is, targetVal, bs, kh, insulin);
+        } catch(NumberFormatException e) {
+            Toast.makeText(this, getString(R.string.error_msg_missing_prefs), Toast.LENGTH_LONG).show();
         } catch (RuntimeException e) {
             Toast.makeText(this, getString(R.string.error_msg_calc), Toast.LENGTH_SHORT).show();
         }
@@ -73,7 +75,7 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
     private void saveToHistory(Double ik, Double is, Double targetVal, Double bs, Double kh, Double insulin) {
 
         ContentValues values = new ContentValues();
-        values.put(HistoryContract.HistoryEntry.Column.TIMESTAMP.toString(), System.currentTimeMillis() / 1000);
+        values.put(HistoryContract.HistoryEntry.Column.TIMESTAMP.toString(), System.currentTimeMillis());
         values.put(HistoryContract.HistoryEntry.Column.IK.toString(), ik);
         values.put(HistoryContract.HistoryEntry.Column.IS.toString(), is);
         values.put(HistoryContract.HistoryEntry.Column.TARGET.toString(), targetVal);
@@ -84,9 +86,15 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
         getContentResolver().insert(HistoryContract.HistoryEntry.CONTENT_URI, values);
     }
 
+    /**
+     * If the value is not set or not convertable to a double, a NumberFormatException is thrown.
+     * @param preferences
+     * @param prefId
+     * @return
+     */
     @NonNull
     private Double getPrefValue(SharedPreferences preferences, int prefId) {
-        return Double.valueOf(preferences.getString(getString(prefId), "1.0"));
+        return Double.valueOf(preferences.getString(getString(prefId), ""));
     }
 
     @NonNull

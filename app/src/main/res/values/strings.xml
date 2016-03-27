@@ -12,5 +12,6 @@
     <string name="menu_history">History</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_history">History</string>
+    <string name="error_msg_missing_prefs">Preference values a not set or incorrect.</string>
 
 </resources>

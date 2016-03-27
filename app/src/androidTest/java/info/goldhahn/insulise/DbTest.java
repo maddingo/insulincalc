@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.RenamingDelegatingContext;
@@ -12,10 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,20 +36,18 @@ import static org.junit.Assert.assertThat;
 public class DbTest {
 
     private Context context;
-    private Context testContext;
 
     @Before
     public void setupContext() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        testContext = new RenamingDelegatingContext(context, "test_");
-        deleteDatabase();
+//        deleteDatabase(context);
     }
 
-    private void deleteDatabase() {
+    public static void deleteDatabase(Context context) {
         context.deleteDatabase(HistoryDbHelper.DATABASE_NAME);
     }
 
-    @Test
+    //@Test
     public void createDb() {
 
         SQLiteDatabase db = new HistoryDbHelper(context).getWritableDatabase();
@@ -88,7 +85,7 @@ public class DbTest {
 
     @Test
     public void historyTable() {
-        long historyId = insertHistoryEntry();
+        long historyId = insertHistoryEntry(context);
 
         assertThat(historyId, is(not(equalTo(-1L))));
 
@@ -100,9 +97,14 @@ public class DbTest {
 
         assertThat(c.moveToFirst(), is(true));
 
-        Map<String, Object> historyEntries = new HashMap<String, Object>();
+        Map<String, Object> entry = cursorToMap(c);
+        assertThat(entry.size(), is(equalTo(HistoryContract.HistoryEntry.Column.values().length)));
+    }
+
+    public static Map<String, Object> cursorToMap(Cursor c) {
+        Map<String, Object> historyEntry = new HashMap<String, Object>();
         for (HistoryContract.HistoryEntry.Column col : HistoryContract.HistoryEntry.Column.values()) {
-            historyEntries.put(col.toString(), null);
+            historyEntry.put(col.toString(), null);
         }
         for (int i = 0; i < c.getColumnCount(); i++) {
             String colName = c.getColumnName(i);
@@ -121,27 +123,34 @@ public class DbTest {
                 default:
                     throw new IllegalArgumentException("Unhandled type: " + type);
             }
-            Object oldValue = historyEntries.put(colName, val);
+            Object oldValue = historyEntry.put(colName, val);
             assertThat (oldValue, is(nullValue()));
         }
+        return historyEntry;
     }
 
-    private long insertHistoryEntry() {
+    public static long insertHistoryEntry(Context context) {
         HistoryDbHelper helper = new HistoryDbHelper(context);
         SQLiteDatabase db = helper.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(HistoryContract.HistoryEntry.Column.BS.toString(), 6.0);
-        values.put(HistoryContract.HistoryEntry.Column.KH.toString(), 45.0);
-        values.put(HistoryContract.HistoryEntry.Column.IK.toString(), 15.0);
-        values.put(HistoryContract.HistoryEntry.Column.IS.toString(), 3.6);
-        values.put(HistoryContract.HistoryEntry.Column.TARGET.toString(), 6.0);
-        values.put(HistoryContract.HistoryEntry.Column.TIMESTAMP.toString(), System.currentTimeMillis());
-        values.put(HistoryContract.HistoryEntry.Column.INSULIN.toString(), 3.0);
+        ContentValues values = getContentValues(6.0, 45.0);
 
         long histIdx = db.insert(HistoryContract.HistoryEntry.TABLE_NAME, null, values);
 
         db.close();
         return histIdx;
+    }
+
+    @NonNull
+    public static ContentValues getContentValues(double bs, double kh) {
+        ContentValues values = new ContentValues();
+        values.put(HistoryContract.HistoryEntry.Column.BS.toString(), bs);
+        values.put(HistoryContract.HistoryEntry.Column.KH.toString(), kh);
+        values.put(HistoryContract.HistoryEntry.Column.IK.toString(), 15.0);
+        values.put(HistoryContract.HistoryEntry.Column.IS.toString(), 3.6);
+        values.put(HistoryContract.HistoryEntry.Column.TARGET.toString(), 6.0);
+        values.put(HistoryContract.HistoryEntry.Column.TIMESTAMP.toString(), System.currentTimeMillis());
+        values.put(HistoryContract.HistoryEntry.Column.INSULIN.toString(), 3.0);
+        return values;
     }
 }
