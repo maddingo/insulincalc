@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +21,7 @@ import java.text.NumberFormat;
 
 import info.goldhahn.insulise.history.HistoryContract;
 
-public class InsulinCalculatorActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private NumberFormat numberFormat = new DecimalFormat("###0.00");
     private NumberFormat numberFormat1Digit = new DecimalFormat("###0.0");
 
@@ -99,7 +98,7 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(InsulinCalculatorActivity.this);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 Double ik = getPrefValue(preferences, R.string.pref_key_ik);
                 Double is = getPrefValue(preferences, R.string.pref_key_is);
                 Double targetVal = getPrefValue(preferences, R.string.pref_key_target);

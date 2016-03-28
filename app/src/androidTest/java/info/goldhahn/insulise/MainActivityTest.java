@@ -20,10 +20,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 @SmallTest
-public class InsulinCalculatorActivityTest {
+public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<InsulinCalculatorActivity> testRule = new ActivityTestRule<InsulinCalculatorActivity>(InsulinCalculatorActivity.class);
+    public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Test
     public void withDefaultPrefs() {
@@ -36,7 +36,7 @@ public class InsulinCalculatorActivityTest {
     }
 
     private void calculate(String prefIK, String prefIS, String prefTarget, String bs, String carb, String expected) {
-        InsulinCalculatorActivity activity = testRule.getActivity();
+        MainActivity activity = testRule.getActivity();
 
         // prepare preferences
         int nPrefChanges = 0;
