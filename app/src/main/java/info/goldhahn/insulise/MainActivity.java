@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insulin_calculator);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         bs.setNextFocusDownId(R.id.calcButton);
         karbo.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(karbo, InputMethodManager.SHOW_IMPLICIT);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
@@ -125,6 +126,19 @@ public class MainActivity extends AppCompatActivity {
         adjustInsulin(-0.5);
     }
 
+    public void onSendSMS(View view) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String[] smsRecipients = getPrefList(preferences, R.string.pref_key_sms_recipients);
+
+        StringBuilder text = new StringBuilder();
+        text.append("BS:").append(getInputValue(R.id.blodsugar)).append(" ");
+        text.append("KH:").append(getInputValue(R.id.karbo)).append(" ");
+        text.append(" = ").append(getInputValue(R.id.insulin));
+        for (String recipient : smsRecipients) {
+            SmsManager.getDefault().sendTextMessage(recipient, null, text.toString(), null, null);
+        }
+    }
+
     private void adjustInsulin(double adjustment) {
         TextView insulinValue = (TextView) findViewById(R.id.insulin);
         Double insulin = Double.valueOf(insulinValue.getText().toString());
@@ -153,6 +167,14 @@ public class MainActivity extends AppCompatActivity {
     @NonNull
     private Double getPrefValue(SharedPreferences preferences, int prefId) {
         return Double.valueOf(preferences.getString(getString(prefId), ""));
+    }
+
+    private String[] getPrefList(SharedPreferences preferences, int prefId) {
+        String prefValue = preferences.getString(getString(prefId), "");
+        if (!TextUtils.isEmpty(prefValue)) {
+            return SettingsActivity.splitSmsRecipients(prefValue);
+        }
+        return new String[0];
     }
 
     @NonNull
