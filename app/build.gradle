@@ -7,7 +7,7 @@ android {
         applicationId "info.goldhahn.insulise"
         minSdkVersion 17
         targetSdkVersion 17
-        versionCode 3
+        versionCode 4
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
