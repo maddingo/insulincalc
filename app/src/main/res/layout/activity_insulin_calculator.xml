@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -9,125 +10,106 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".InsulinCalculatorActivity">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TableRow
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/karbo"
+            android:editable="true"
+            android:focusable="true"
+            android:enabled="true"
+            android:lines="1"
+            android:numeric="integer"
+            android:hint="@string/calc_carbo_hint"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Karbo:"
-                android:id="@+id/karboLabel"
-                android:layout_below="@+id/bsLabel"
-                android:layout_alignParentStart="true"
-                android:layout_column="0" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/karbo"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:editable="true"
-                android:focusable="true"
-                android:enabled="true"
-                android:layout_alignStart="@+id/calcButton"
-                android:layout_column="1" />
-        </TableRow>
-
-        <TableRow
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/blodsugar"
+            android:editable="true"
+            android:enabled="true"
+            android:focusable="true"
+            android:hint="@string/calc_bloodsugar_hint"
+            android:layout_weight="1"
+            android:focusableInTouchMode="true" />
+    </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Blodsukker:"
-                android:id="@+id/bsLabel"
-                android:layout_alignParentStart="true"
-                android:layout_alignBottom="@+id/karbo"
-                android:layout_column="0" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/calc_button_text"
+        android:id="@+id/calcButton"
+        android:onClick="onCalculate"
+        android:enabled="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="center"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/blodsugar"
-                android:editable="true"
-                android:enabled="true"
-                android:focusable="true"
-                android:layout_alignBottom="@+id/karboLabel"
-                android:layout_alignStart="@+id/calcButton"
-                android:layout_column="1" />
-        </TableRow>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
 
-        <TableRow
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/calc_insulin_label"
+            android:id="@+id/insulinLabel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:ems="6"
+            android:id="@+id/insulin"
+            android:padding="@dimen/text_margin" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calc_adjust_auto"
+            android:onClick="onAdjustAuto" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/calc_adjust_plus"
+            android:onClick="onAdjustPlus" />
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/calc_adjust_minus"
+            android:onClick="onAdjustMinus" />
+        <Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:text="@string/calc_button_save"
+            android:id="@+id/saveButton"
+            android:onClick="onSave" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="="
-                android:id="@+id/calcButton"
-                android:onClick="onCalculate"
-                android:enabled="true"
-                android:layout_below="@+id/blodsugar"
-                android:layout_toEndOf="@+id/bsLabel"
-                android:layout_marginTop="5dp"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:layout_marginBottom="5dp"
-                android:textAlignment="center" />
+    </LinearLayout>
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Insulin:"
-                android:id="@+id/insulinLabel"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_column="0" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/insulin"
-                android:layout_alignBottom="@+id/insulinLabel"
-                android:layout_toEndOf="@+id/bsLabel"
-                android:layout_column="1" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableRow>
-    </TableLayout>
-
-</RelativeLayout>
+</LinearLayout>

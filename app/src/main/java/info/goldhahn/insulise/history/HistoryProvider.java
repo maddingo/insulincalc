@@ -94,8 +94,19 @@ public class HistoryProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        int rowsDeleted;
+        switch(uriMatcher.match(uri)) {
+            case HISTORY:
+                rowsDeleted = dbHelper.getWritableDatabase().delete(HistoryContract.HistoryEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException(uri.toString());
+        }
+        if (rowsDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override

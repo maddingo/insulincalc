@@ -85,7 +85,7 @@ public class DbTest {
 
     @Test
     public void historyTable() {
-        long historyId = insertHistoryEntry(context);
+        long historyId = insertHistoryEntry(context, getContentValues(6.0, 45.0));
 
         assertThat(historyId, is(not(equalTo(-1L))));
 
@@ -129,11 +129,9 @@ public class DbTest {
         return historyEntry;
     }
 
-    public static long insertHistoryEntry(Context context) {
+    public static long insertHistoryEntry(Context context, ContentValues values) {
         HistoryDbHelper helper = new HistoryDbHelper(context);
         SQLiteDatabase db = helper.getWritableDatabase();
-
-        ContentValues values = getContentValues(6.0, 45.0);
 
         long histIdx = db.insert(HistoryContract.HistoryEntry.TABLE_NAME, null, values);
 
