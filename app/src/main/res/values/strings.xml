@@ -4,17 +4,17 @@
     <string name="pref_header_general">General</string>
     <string name="pref_ik">Insulin / Carbo Factor (IK)</string>
     <string name="pref_key_ik" translatable="false">ik</string>
-    <string name="pref_is">Insulin Sensitivity</string>
+    <string name="pref_is">Insulin Sensitivity (IS)</string>
     <string name="pref_key_is" translatable="false">is</string>
-    <string name="pref_key_target">Target Value</string>
-    <string name="pref_target" translatable="false">Target Value</string>
+    <string name="pref_key_target" translatable="false">bs_target</string>
+    <string name="pref_target">Target Value</string>
     <string name="error_msg_calc">Something went wrong, try again.</string>
     <string name="menu_history">History</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_history">History</string>
     <string name="error_msg_missing_prefs">Preference values a not set or incorrect.</string>
-    <string name="calc_carbo_hint">Karbo</string>
-    <string name="calc_bloodsugar_hint">Blodsukker</string>
+    <string name="calc_carbo_hint">Carbs</string>
+    <string name="calc_bloodsugar_hint">Bld. sugar</string>
     <string name="calc_button_text">=</string>
     <string name="calc_button_save">Save</string>
     <string name="calc_insulin_label">Insulin:</string>
