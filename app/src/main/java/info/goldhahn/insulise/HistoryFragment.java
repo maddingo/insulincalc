@@ -3,6 +3,7 @@ package info.goldhahn.insulise;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -10,6 +11,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -27,6 +31,12 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
     private static final int HISTORY_LOADER = 0;
     private HistoryAdapter historyAdapter;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +50,30 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 
         listview.setAdapter(historyAdapter);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.history, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_history_clear:
+                clearHistory();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void clearHistory() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().getContentResolver().delete(HistoryEntry.CONTENT_URI, null, null);
+            }
+        });
     }
 
     @Override

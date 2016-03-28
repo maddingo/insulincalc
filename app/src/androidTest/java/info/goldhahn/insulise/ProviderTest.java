@@ -68,7 +68,7 @@ public class ProviderTest {
 
     @Test
     public void allHistoryQuery() {
-        DbTest.insertHistoryEntry(context);
+        DbTest.insertHistoryEntry(context, DbTest.getContentValues(6.0, 45.0));
 
         Cursor c = context.getContentResolver().query(HistoryContract.HistoryEntry.CONTENT_URI, null, null, null, null);
         assertThat(c, is(notNullValue()));
@@ -91,5 +91,19 @@ public class ProviderTest {
         resolver.insert(HistoryContract.HistoryEntry.CONTENT_URI, values);
 
         tco.waitForNotificationOrFail();
+    }
+
+    @Test
+    public void deleteHistory() {
+        DbTest.deleteDatabase(context);
+        DbTest.insertHistoryEntry(context, DbTest.getContentValues(6.0, 45.0));
+        DbTest.insertHistoryEntry(context, DbTest.getContentValues(7.0, 15.0));
+
+        TestContentObserver tco = TestContentObserver.getTestContentObserver();
+        ContentResolver resolver = context.getContentResolver();
+        resolver.registerContentObserver(HistoryContract.HistoryEntry.CONTENT_URI, true, tco);
+        int nDeleted = resolver.delete(HistoryContract.HistoryEntry.CONTENT_URI, null, null);
+        tco.waitForNotificationOrFail();
+        assertThat(nDeleted, is(2));
     }
 }

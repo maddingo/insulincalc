@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -94,17 +95,23 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Double ik = getPrefValue(preferences, R.string.pref_key_ik);
-        Double is = getPrefValue(preferences, R.string.pref_key_is);
-        Double targetVal = getPrefValue(preferences, R.string.pref_key_target);
+        new Handler().post(new Runnable() {
 
-        Double bs = getInputValue(R.id.blodsugar);
-        Double kh = getInputValue(R.id.karbo);
+            @Override
+            public void run() {
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(InsulinCalculatorActivity.this);
+                Double ik = getPrefValue(preferences, R.string.pref_key_ik);
+                Double is = getPrefValue(preferences, R.string.pref_key_is);
+                Double targetVal = getPrefValue(preferences, R.string.pref_key_target);
 
-        Double insulin = getInputValue(R.id.insulin);
+                Double bs = getInputValue(R.id.blodsugar);
+                Double kh = getInputValue(R.id.karbo);
 
-        saveToHistory(ik, is, targetVal, bs, kh, insulin);
+                Double insulin = getInputValue(R.id.insulin);
+
+                saveToHistory(ik, is, targetVal, bs, kh, insulin);
+            }
+        });
     }
 
     public void onAdjustAuto(View view) {
@@ -151,7 +158,7 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
 
     @NonNull
     private Double getInputValue(int resId) {
-        EditText inView = (EditText) findViewById(resId);
+        TextView inView = (TextView) findViewById(resId);
         if (inView != null) {
             return Double.valueOf(inView.getText().toString());
         }

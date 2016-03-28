@@ -21,5 +21,6 @@
     <string name="calc_adjust_auto">A</string>
     <string name="calc_adjust_plus">+</string>
     <string name="calc_adjust_minus">-</string>
+    <string name="action_clear_history">Clear</string>
 
 </resources>
