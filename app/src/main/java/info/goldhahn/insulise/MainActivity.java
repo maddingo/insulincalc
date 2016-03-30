@@ -19,13 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import info.goldhahn.insulise.history.HistoryContract;
 
 public class MainActivity extends AppCompatActivity {
-    private NumberFormat numberFormat = new DecimalFormat("###0.00");
-    private NumberFormat numberFormat1Digit = new DecimalFormat("###0.0");
+    public static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.US);
+    private NumberFormat numberFormat = new DecimalFormat("###0.00", DECIMAL_FORMAT_SYMBOLS);
+    private NumberFormat NUMBER_FORMAT_1DIGIT = new DecimalFormat("###0.0", DECIMAL_FORMAT_SYMBOLS);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +199,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private String formatNumberPointFive(Number num) {
 
-        return numberFormat1Digit.format(Math.round(num.doubleValue() * 2.0) / 2.0);
+        return NUMBER_FORMAT_1DIGIT.format(Math.round(num.doubleValue() * 2.0) / 2.0);
     }
 }
