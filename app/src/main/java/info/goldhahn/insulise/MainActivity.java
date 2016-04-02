@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,16 +131,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSendSMS(View view) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        String[] smsRecipients = getPrefList(preferences, R.string.pref_key_sms_recipients);
 
-        StringBuilder text = new StringBuilder();
-        text.append("BS:").append(getInputValue(R.id.blodsugar)).append(" ");
-        text.append("KH:").append(getInputValue(R.id.karbo)).append(" ");
-        text.append(" = ").append(getInputValue(R.id.insulin));
-        for (String recipient : smsRecipients) {
-            SmsManager.getDefault().sendTextMessage(recipient, null, text.toString(), null, null);
-        }
+        final Button sendButton = (Button) view;
+        sendButton.setEnabled(false);
+        new Handler().post(
+            new Runnable() {
+
+                @Override
+                public void run() {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    String[] smsRecipients = getPrefList(preferences, R.string.pref_key_sms_recipients);
+
+                    StringBuilder text = new StringBuilder();
+                    text.append("BS:").append(getInputValue(R.id.blodsugar)).append(" ");
+                    text.append("KH:").append(getInputValue(R.id.karbo)).append(" ");
+                    text.append(" = ").append(getInputValue(R.id.insulin));
+                    for (String recipient : smsRecipients) {
+                        SmsManager.getDefault().sendTextMessage(recipient, null, text.toString(), null, null);
+                    }
+                }
+            }
+        );
+        // Lock the send button for some time
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sendButton.setEnabled(true);
+            }
+        }, 5000L);
     }
 
     private void adjustInsulin(double adjustment) {
