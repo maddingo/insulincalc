@@ -28,7 +28,8 @@
             android:numeric="integer"
             android:hint="@string/calc_carbo_hint"
             android:layout_weight="1"
-            android:focusableInTouchMode="true"/>
+            android:focusableInTouchMode="true"
+            android:selectAllOnFocus="true" />
 
         <EditText
             android:layout_width="match_parent"
@@ -41,7 +42,8 @@
             android:focusable="true"
             android:hint="@string/calc_bloodsugar_hint"
             android:layout_weight="1"
-            android:focusableInTouchMode="true" />
+            android:focusableInTouchMode="true"
+            android:selectAllOnFocus="true" />
     </LinearLayout>
 
     <Button
