@@ -121,13 +121,4 @@
         android:layout_gravity="center_horizontal"
         android:onClick="onSendSMS" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:padding="@dimen/prograssbar_padding"
-        android:progress="1"
-        android:minWidth="10dp"
-        android:max="4" />
 </LinearLayout>
