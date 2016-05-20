@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        View karbo = findViewById(R.id.karbo);
-        karbo.setNextFocusDownId(R.id.blodsugar);
+//        View karbo = findViewById(R.id.karbo);
+//        karbo.setNextFocusDownId(R.id.blodsugar);
         View bs = findViewById(R.id.blodsugar);
         bs.setNextFocusDownId(R.id.calcButton);
-        karbo.requestFocus();
+//        karbo.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSendSMS(View view) {
+
+        onSave(view);
 
         final Button sendButton = (Button) view;
         sendButton.setEnabled(false);
