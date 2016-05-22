@@ -1,4 +1,4 @@
-InsuLise - an Insulin Calclator
+InsuLise - an Insulin Calclatoru
 =================================
 
 This is a simple Android application to calculate the insulin dose based on  blood sugar reading and 
