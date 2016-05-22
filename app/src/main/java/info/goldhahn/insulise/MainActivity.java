@@ -7,29 +7,41 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import info.goldhahn.insulise.history.HistoryContract;
 
-public class InsulinCalculatorActivity extends AppCompatActivity {
-    private NumberFormat numberFormat = new DecimalFormat("###0.00");
-    private NumberFormat numberFormat1Digit = new DecimalFormat("###0.0");
+public class MainActivity extends AppCompatActivity {
+    public static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.US);
+    private NumberFormat numberFormat = new DecimalFormat("###0.00", DECIMAL_FORMAT_SYMBOLS);
+    private NumberFormat NUMBER_FORMAT_1DIGIT = new DecimalFormat("###0.0", DECIMAL_FORMAT_SYMBOLS);
+
+    /**
+     * This field is used to make the MainActivity more testable.
+     * The test hangs if a Toast is shown in case of an error.
+     */
+    private CalculationErrorHandler calculationErrorHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insulin_calculator);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -55,13 +67,9 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        View karbo = findViewById(R.id.karbo);
-        karbo.setNextFocusDownId(R.id.blodsugar);
         View bs = findViewById(R.id.blodsugar);
         bs.setNextFocusDownId(R.id.calcButton);
-        karbo.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInput(karbo, InputMethodManager.SHOW_IMPLICIT);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
@@ -83,14 +91,14 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
 
             TextView insulinValue = (TextView) findViewById(R.id.insulin);
             insulinValue.setText(formatNumber(insulin));
-            insulinValue.setNextFocusDownId(R.id.insulin);
+//            insulinValue.setNextFocusDownId(R.id.insulin);
 
-            // jump to insuline window
-            insulinValue.requestFocus();
+            // jump to insulin window
+//            insulinValue.requestFocus();
         } catch(NumberFormatException e) {
-            Toast.makeText(this, getString(R.string.error_msg_missing_prefs), Toast.LENGTH_LONG).show();
+            getCalculationErrorHandler().handleError(this, R.string.error_msg_missing_prefs);
         } catch (RuntimeException e) {
-            Toast.makeText(this, getString(R.string.error_msg_calc), Toast.LENGTH_SHORT).show();
+            getCalculationErrorHandler().handleError(this, R.string.error_msg_calc);
         }
     }
 
@@ -99,7 +107,7 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(InsulinCalculatorActivity.this);
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 Double ik = getPrefValue(preferences, R.string.pref_key_ik);
                 Double is = getPrefValue(preferences, R.string.pref_key_is);
                 Double targetVal = getPrefValue(preferences, R.string.pref_key_target);
@@ -124,6 +132,39 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
 
     public void onAdjustMinus(View view) {
         adjustInsulin(-0.5);
+    }
+
+    public void onSendSMS(View view) {
+
+        onSave(view);
+
+        final Button sendButton = (Button) view;
+        sendButton.setEnabled(false);
+        new Handler().post(
+            new Runnable() {
+
+                @Override
+                public void run() {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    String[] smsRecipients = getPrefList(preferences, R.string.pref_key_sms_recipients);
+
+                    StringBuilder text = new StringBuilder();
+                    text.append("BS:").append(getInputValue(R.id.blodsugar)).append(" ");
+                    text.append("KH:").append(getInputValue(R.id.karbo)).append(" ");
+                    text.append(" = ").append(getInputValue(R.id.insulin));
+                    for (String recipient : smsRecipients) {
+                        SmsManager.getDefault().sendTextMessage(recipient, null, text.toString(), null, null);
+                    }
+                }
+            }
+        );
+        // Lock the send button for some time
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sendButton.setEnabled(true);
+            }
+        }, 5000L);
     }
 
     private void adjustInsulin(double adjustment) {
@@ -156,6 +197,14 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
         return Double.valueOf(preferences.getString(getString(prefId), ""));
     }
 
+    private String[] getPrefList(SharedPreferences preferences, int prefId) {
+        String prefValue = preferences.getString(getString(prefId), "");
+        if (!TextUtils.isEmpty(prefValue)) {
+            return SettingsActivity.splitSmsRecipients(prefValue);
+        }
+        return new String[0];
+    }
+
     @NonNull
     private Double getInputValue(int resId) {
         TextView inView = (TextView) findViewById(resId);
@@ -175,6 +224,33 @@ public class InsulinCalculatorActivity extends AppCompatActivity {
      */
     private String formatNumberPointFive(Number num) {
 
-        return numberFormat1Digit.format(Math.round(num.doubleValue() * 2.0) / 2.0);
+        return NUMBER_FORMAT_1DIGIT.format(Math.round(num.doubleValue() * 2.0) / 2.0);
+    }
+
+    public CalculationErrorHandler getCalculationErrorHandler() {
+        if (calculationErrorHandler == null) {
+            synchronized(this) {
+                if (calculationErrorHandler == null) {
+                    calculationErrorHandler = new StandardCalculationErrorHandler();
+                }
+            }
+        }
+        return calculationErrorHandler;
+    }
+
+    public synchronized void setCalculationErrorHandler(CalculationErrorHandler calculationErrorHandler) {
+        this.calculationErrorHandler = calculationErrorHandler;
+    }
+
+    private static class StandardCalculationErrorHandler implements CalculationErrorHandler {
+
+        @Override
+        public void handleError(Context ctx, @StringRes int resId) {
+            Toast.makeText(ctx, ctx.getString(resId), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public interface CalculationErrorHandler {
+        void handleError(Context ctx, @StringRes int resId);
     }
 }

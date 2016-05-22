@@ -12,7 +12,7 @@
     <string name="menu_history">History</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_history">History</string>
-    <string name="error_msg_missing_prefs">Preference values a not set or incorrect.</string>
+    <string name="error_msg_missing_prefs">Preference values are not set or incorrect.</string>
     <string name="calc_carbo_hint">Carbs</string>
     <string name="calc_bloodsugar_hint">Bld. sugar</string>
     <string name="calc_button_text">=</string>
@@ -22,5 +22,7 @@
     <string name="calc_adjust_plus">+</string>
     <string name="calc_adjust_minus">-</string>
     <string name="action_clear_history">Clear</string>
+    <string name="pref_key_sms_recipients" translatable="false">sms_recipients</string>
+    <string name="pref_sms_recipients">SMS Recipients</string>
 
 </resources>
