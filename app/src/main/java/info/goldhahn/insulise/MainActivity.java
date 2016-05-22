@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -30,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
     public static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.US);
     private NumberFormat numberFormat = new DecimalFormat("###0.00", DECIMAL_FORMAT_SYMBOLS);
     private NumberFormat NUMBER_FORMAT_1DIGIT = new DecimalFormat("###0.0", DECIMAL_FORMAT_SYMBOLS);
+
+    /**
+     * This field is used to make the MainActivity more testable.
+     * The test hangs if a Toast is shown in case of an error.
+     */
+    private CalculationErrorHandler calculationErrorHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +67,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-//        View karbo = findViewById(R.id.karbo);
-//        karbo.setNextFocusDownId(R.id.blodsugar);
         View bs = findViewById(R.id.blodsugar);
         bs.setNextFocusDownId(R.id.calcButton);
-//        karbo.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
@@ -87,14 +91,14 @@ public class MainActivity extends AppCompatActivity {
 
             TextView insulinValue = (TextView) findViewById(R.id.insulin);
             insulinValue.setText(formatNumber(insulin));
-            insulinValue.setNextFocusDownId(R.id.insulin);
+//            insulinValue.setNextFocusDownId(R.id.insulin);
 
-            // jump to insuline window
-            insulinValue.requestFocus();
+            // jump to insulin window
+//            insulinValue.requestFocus();
         } catch(NumberFormatException e) {
-            Toast.makeText(this, getString(R.string.error_msg_missing_prefs), Toast.LENGTH_LONG).show();
+            getCalculationErrorHandler().handleError(this, R.string.error_msg_missing_prefs);
         } catch (RuntimeException e) {
-            Toast.makeText(this, getString(R.string.error_msg_calc), Toast.LENGTH_SHORT).show();
+            getCalculationErrorHandler().handleError(this, R.string.error_msg_calc);
         }
     }
 
@@ -221,5 +225,32 @@ public class MainActivity extends AppCompatActivity {
     private String formatNumberPointFive(Number num) {
 
         return NUMBER_FORMAT_1DIGIT.format(Math.round(num.doubleValue() * 2.0) / 2.0);
+    }
+
+    public CalculationErrorHandler getCalculationErrorHandler() {
+        if (calculationErrorHandler == null) {
+            synchronized(this) {
+                if (calculationErrorHandler == null) {
+                    calculationErrorHandler = new StandardCalculationErrorHandler();
+                }
+            }
+        }
+        return calculationErrorHandler;
+    }
+
+    public synchronized void setCalculationErrorHandler(CalculationErrorHandler calculationErrorHandler) {
+        this.calculationErrorHandler = calculationErrorHandler;
+    }
+
+    private static class StandardCalculationErrorHandler implements CalculationErrorHandler {
+
+        @Override
+        public void handleError(Context ctx, @StringRes int resId) {
+            Toast.makeText(ctx, ctx.getString(resId), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public interface CalculationErrorHandler {
+        void handleError(Context ctx, @StringRes int resId);
     }
 }
