@@ -1,4 +1,6 @@
 language: android
+# The kernel image can still not be found
+# Check out https://travis-ci.org/ankidroid/Anki-Android/builds/516486599/config for a solution
 jdk:
   - oraclejdk8
 dist: trusty
