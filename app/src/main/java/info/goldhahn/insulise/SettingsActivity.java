@@ -18,29 +18,13 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_ik)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_is)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_target)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_sms_recipients)));
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String stringValue = newValue != null ? newValue.toString() : "";
-        if (preference.getKey().equals(getString(R.string.pref_key_sms_recipients))) {
-            if (!TextUtils.isEmpty(stringValue)) {
-                String[] numbers = splitSmsRecipients(stringValue);
-                for (String number : numbers) {
-                    if (!PhoneNumberUtils.isWellFormedSmsAddress(number)) {
-                        return false;
-                    }
-                }
-            }
-        }
         preference.setSummary(stringValue);
         return true;
-    }
-
-    @NonNull
-    public static String[] splitSmsRecipients(String stringValue) {
-        return stringValue.split("\\s*[\\,\\;]\\s*");
     }
 
     /**
@@ -59,5 +43,4 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
     }
-
 }
