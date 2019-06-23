@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.SmallTest;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
 @RunWith(AndroidJUnit4.class)
-@SmallTest
 public class MainActivityTest {
 
     @Rule

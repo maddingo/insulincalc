@@ -115,9 +115,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Send"
+        android:text="@string/calc_button_save"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
-        android:onClick="onSendSMS" />
+        android:onClick="onSave" />
 
 </LinearLayout>

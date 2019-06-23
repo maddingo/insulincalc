@@ -27,10 +27,4 @@
         android:numeric="decimal"
         android:defaultValue="6.0"/>
 
-    <EditTextPreference
-        android:title="@string/pref_sms_recipients"
-        android:inputType="text"
-        android:key="@string/pref_key_sms_recipients"
-        android:singleLine="false"/>
-
 </PreferenceScreen>

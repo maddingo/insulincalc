@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.RenamingDelegatingContext;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +54,7 @@ public class DbTest {
         assertThat(db, is(notNullValue()));
         assertThat(db.isOpen(), is(true));
 
-        // Verify thst table exists in the database
+        // Verify that the table exists in the database
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
 
         assertThat("Cursor ", c.moveToFirst(), is(true));

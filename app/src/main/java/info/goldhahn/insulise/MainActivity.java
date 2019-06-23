@@ -134,39 +134,6 @@ public class MainActivity extends AppCompatActivity {
         adjustInsulin(-0.5);
     }
 
-    public void onSendSMS(View view) {
-
-        onSave(view);
-
-        final Button sendButton = (Button) view;
-        sendButton.setEnabled(false);
-        new Handler().post(
-            new Runnable() {
-
-                @Override
-                public void run() {
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    String[] smsRecipients = getPrefList(preferences, R.string.pref_key_sms_recipients);
-
-                    StringBuilder text = new StringBuilder();
-                    text.append("BS:").append(getInputValue(R.id.blodsugar)).append(" ");
-                    text.append("KH:").append(getInputValue(R.id.karbo)).append(" ");
-                    text.append(" = ").append(getInputValue(R.id.insulin));
-                    for (String recipient : smsRecipients) {
-                        SmsManager.getDefault().sendTextMessage(recipient, null, text.toString(), null, null);
-                    }
-                }
-            }
-        );
-        // Lock the send button for some time
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sendButton.setEnabled(true);
-            }
-        }, 5000L);
-    }
-
     private void adjustInsulin(double adjustment) {
         TextView insulinValue = (TextView) findViewById(R.id.insulin);
         Double insulin = Double.valueOf(insulinValue.getText().toString());
@@ -190,24 +157,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * If the value is not set or not convertable to a double, a NumberFormatException is thrown.
+     * If the value is not set or not convertible to a double, a NumberFormatException is thrown.
      */
     @NonNull
     private Double getPrefValue(SharedPreferences preferences, int prefId) {
-        return Double.valueOf(preferences.getString(getString(prefId), ""));
-    }
-
-    private String[] getPrefList(SharedPreferences preferences, int prefId) {
         String prefValue = preferences.getString(getString(prefId), "");
-        if (!TextUtils.isEmpty(prefValue)) {
-            return SettingsActivity.splitSmsRecipients(prefValue);
-        }
-        return new String[0];
+        return Double.valueOf(prefValue);
     }
 
     @NonNull
     private Double getInputValue(int resId) {
-        TextView inView = (TextView) findViewById(resId);
+        TextView inView = findViewById(resId);
         if (inView != null) {
             return Double.valueOf(inView.getText().toString());
         }
