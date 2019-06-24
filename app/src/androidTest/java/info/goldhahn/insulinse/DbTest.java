@@ -1,4 +1,4 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import info.goldhahn.insulise.history.HistoryContract;
-import info.goldhahn.insulise.history.HistoryDbHelper;
+import info.goldhahn.insulinse.history.HistoryContract;
+import info.goldhahn.insulinse.history.HistoryDbHelper;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;

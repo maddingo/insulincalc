@@ -1,4 +1,4 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

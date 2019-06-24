@@ -1,4 +1,4 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,13 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +22,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import info.goldhahn.insulise.history.HistoryContract;
+import info.goldhahn.insulinse.history.HistoryContract;
 
 public class MainActivity extends AppCompatActivity {
     public static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.US);

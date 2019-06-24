@@ -1,4 +1,4 @@
-package info.goldhahn.insulise.util;
+package info.goldhahn.insulinse.util;
 
 /*
  * Copyright (C) 2012 The Android Open Source Project

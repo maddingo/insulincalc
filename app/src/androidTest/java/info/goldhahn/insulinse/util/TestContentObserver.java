@@ -1,4 +1,4 @@
-package info.goldhahn.insulise.util;
+package info.goldhahn.insulinse.util;
 
 import android.database.ContentObserver;
 import android.net.Uri;

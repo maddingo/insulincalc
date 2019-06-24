@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.goldhahn.insulise">
+    package="info.goldhahn.insulinse">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:windowSoftInputMode="stateVisible">
+        <activity android:name="info.goldhahn.insulinse.MainActivity" android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,17 +18,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="info.goldhahn.insulinse.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName="info.goldhahn.insulinse.MainActivity"/>
 
-        <activity android:name=".HistoryActivity"
+        <activity android:name="info.goldhahn.insulinse.HistoryActivity"
             android:label="@string/title_activity_history"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName="info.goldhahn.insulinse.MainActivity"/>
 
         <provider
-            android:name=".history.HistoryProvider"
-            android:authorities="info.goldhahn.insulise"
+            android:name="info.goldhahn.insulinse.history.HistoryProvider"
+            android:authorities="info.goldhahn.insulinse"
             android:enabled="true"
             android:exported="true"/>
     </application>

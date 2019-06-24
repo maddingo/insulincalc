@@ -1,4 +1,4 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 import android.content.Context;
 import android.content.SharedPreferences;

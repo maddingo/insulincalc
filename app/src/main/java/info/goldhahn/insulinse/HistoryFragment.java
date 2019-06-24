@@ -1,4 +1,4 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -22,9 +22,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import info.goldhahn.insulise.history.HistoryContract.HistoryEntry;
-
-import info.goldhahn.insulise.history.HistoryContract;
+import info.goldhahn.insulinse.history.HistoryContract.HistoryEntry;
 
 public class HistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 

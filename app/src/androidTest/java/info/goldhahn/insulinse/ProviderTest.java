@@ -1,4 +1,4 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
@@ -17,9 +16,9 @@ import org.junit.runner.RunWith;
 
 import java.util.Map;
 
-import info.goldhahn.insulise.history.HistoryContract;
-import info.goldhahn.insulise.history.HistoryProvider;
-import info.goldhahn.insulise.util.TestContentObserver;
+import info.goldhahn.insulinse.history.HistoryContract;
+import info.goldhahn.insulinse.history.HistoryProvider;
+import info.goldhahn.insulinse.util.TestContentObserver;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

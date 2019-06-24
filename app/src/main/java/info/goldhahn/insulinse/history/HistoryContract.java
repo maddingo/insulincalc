@@ -1,15 +1,12 @@
-package info.goldhahn.insulise.history;
+package info.goldhahn.insulinse.history;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HistoryContract {
-    public static final String CONTENT_AUTHORITY = "info.goldhahn.insulise";
+    public static final String CONTENT_AUTHORITY = "info.goldhahn.insulinse";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_HISTORY = "history";

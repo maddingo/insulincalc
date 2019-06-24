@@ -1,13 +1,10 @@
-package info.goldhahn.insulise;
+package info.goldhahn.insulinse;
 
 
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.telephony.PhoneNumberUtils;
-import android.text.TextUtils;
 
 public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener{
 

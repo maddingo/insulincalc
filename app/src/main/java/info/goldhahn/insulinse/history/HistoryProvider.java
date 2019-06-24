@@ -1,4 +1,4 @@
-package info.goldhahn.insulise.history;
+package info.goldhahn.insulinse.history;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

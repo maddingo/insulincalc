@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InsuLise</string>
+    <string name="app_name">InsuLinse</string>
     <string name="title_activity_settings">Settings</string>
     <string name="pref_header_general">General</string>
     <string name="pref_ik">Insulin / Carbo Factor (IK)</string>
