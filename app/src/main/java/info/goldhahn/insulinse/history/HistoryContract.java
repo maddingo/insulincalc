@@ -55,6 +55,4 @@ public class HistoryContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
-
-
 }

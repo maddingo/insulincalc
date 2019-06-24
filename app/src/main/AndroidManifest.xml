@@ -30,7 +30,7 @@
             android:name="info.goldhahn.insulinse.history.HistoryProvider"
             android:authorities="info.goldhahn.insulinse"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="false"/>
     </application>
 
 </manifest>
