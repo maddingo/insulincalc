@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import info.goldhahn.insulinse.history.HistoryContract.HistoryEntry;
 
@@ -37,14 +40,14 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getLoaderManager().initLoader(HISTORY_LOADER, null, this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        LoaderManager.getInstance(this).initLoader(HISTORY_LOADER, null, this);
 
         historyAdapter = new HistoryAdapter(getActivity());
 
         View rootView = inflater.inflate(R.layout.fragment_history_list, container, false);
 
-        ListView listview = (ListView) rootView.findViewById(R.id.listview_history);
+        ListView listview = rootView.findViewById(R.id.listview_history);
 
         listview.setAdapter(historyAdapter);
         return rootView;
@@ -57,51 +60,46 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_history_clear:
-                clearHistory();
-                break;
+        if (item.getItemId() == R.id.action_history_clear) {
+            clearHistory();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void clearHistory() {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                getActivity().getContentResolver().delete(HistoryEntry.CONTENT_URI, null, null);
+        new Handler().post(() -> {
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                activity.getContentResolver().delete(HistoryEntry.CONTENT_URI, null, null);
             }
         });
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
+    @NonNull
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case HISTORY_LOADER:
-                String sortOrder = HistoryEntry.Column.TIMESTAMP + " DESC";
-                return new CursorLoader(getActivity(), HistoryEntry.CONTENT_URI, HistoryEntry.ALL_COLUMNS, null, null, sortOrder);
-            default:
-                return null;
+        if (id == HISTORY_LOADER) {
+            String sortOrder = HistoryEntry.Column.TIMESTAMP + " DESC";
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                return new CursorLoader(activity, HistoryEntry.CONTENT_URI, HistoryEntry.ALL_COLUMNS, null, null, sortOrder);
+            }
         }
+        throw new IllegalArgumentException("Wrong Id and/or activity");
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         historyAdapter.changeCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 
     private static class HistoryAdapter extends CursorAdapter {
-        public HistoryAdapter(Context context) {
+        HistoryAdapter(Context context) {
             super(context, null, 0);
         }
 
@@ -137,7 +135,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
      * @param time milliseconds since 01.01.1970
      */
     private static String formatTimestamp(long time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd'.'MM'.'yyyy HH':'mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd'.'MM'.'yyyy HH':'mm", Locale.US);
         return sdf.format(new Date(time));
     }
 }

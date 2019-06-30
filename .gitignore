@@ -5,6 +5,9 @@
 /.idea/libraries
 .DS_Store
 /build
+/app/build
+/app/release
+/app/debug
 /captures
 /.idea
 *.apk
